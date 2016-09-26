@@ -11,18 +11,20 @@ set_time_limit(0);
 # From newspaper Id $id_from to newspaper ID $id_to
 # IDs can be found in khorasannews.com
 $id_from = 19285;
-$id_to   = 19334;
+$id_to   = 19286;
 
 # Set to false to save all images in a single folder all together
 $id_folders = true;
 
 # Base folder to save images in
 $base = "images/";
+if( ! is_dir($base) ) mkdir($base);
 
 for ($id=$id_from; $id <= $id_to; $id++) {
   for( $page=1; $page < 17; $page++){
     $url = "http://khorasannews.com/content/newspaper/Version{$id}/0/Page{$page}/newspaperimg_{$id}_{$page}.jpg";
     if( get_headers($url, 1)[0] == 'HTTP/1.1 200 OK' ){
+      if( $id_folders == true && ! is_dir( $base . '/' . $id ) ) mkdir( $base . '/' . $id );
       $filename = explode('/', $url);
       $filename = end($filename);
       $filebase = ($id_folders == true) ? $base . $id . "/" . $filename : $base . $filename;
